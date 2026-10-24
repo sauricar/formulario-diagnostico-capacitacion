@@ -36,7 +36,7 @@ fieldset{border:0;padding:0;margin:26px 0 0;min-width:0}
 legend,.lbl{display:block;font-weight:700;letter-spacing:-.01em;font-size:17px;padding:0;margin-bottom:8px}
 .hint{display:block;font-weight:500;font-size:14px;color:var(--muted);margin:-2px 0 10px}
 .req{color:var(--azul)}
-input[type=text],textarea{width:100%;font:inherit;color:var(--verde);background:var(--blanco);border:1px solid var(--borde);border-radius:8px;padding:11px 12px;min-height:46px}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;color:var(--verde);background:var(--blanco);border:1px solid var(--borde);border-radius:8px;padding:11px 12px;min-height:46px}
 textarea{min-height:120px;resize:vertical}
 input::placeholder,textarea::placeholder{color:#6b7f74}
 input:focus-visible,textarea:focus-visible{outline:3px solid var(--lima);outline-offset:0;border-color:var(--verde)}
@@ -56,7 +56,7 @@ input:focus-visible,textarea:focus-visible{outline:3px solid var(--lima);outline
 .opt b{font-weight:700}
 .err{display:none;color:var(--error);font-size:14px;font-weight:500;margin-top:6px}
 .bad .err{display:block}
-.bad input[type=text],.bad textarea{border-color:var(--error)}
+.bad input[type=text],.bad input[type=email],.bad textarea{border-color:var(--error)}
 .nav{display:flex;gap:12px;align-items:center;margin-top:34px;flex-wrap:wrap}
 button{font:inherit;font-weight:700;letter-spacing:-.005em;border-radius:8px;height:48px;padding:0 28px;cursor:pointer;border:1px solid var(--azul);background:var(--azul);color:#fff;transition:background .15s}
 button:hover{background:var(--verde);border-color:var(--verde)}
@@ -66,6 +66,7 @@ button:disabled{opacity:.6;cursor:wait}
 button:focus-visible{outline:3px solid var(--lima);outline-offset:2px;box-shadow:0 0 0 5px var(--verde)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .notice{font-size:13.5px;color:var(--muted);margin-top:22px}
+.consent{margin-top:22px}.consent .opt{margin:8px 0}
 .banner-err{display:none;margin-top:16px;border:1px solid var(--error);color:var(--error);background:#fff;border-radius:8px;padding:12px 14px;font-weight:500}
 .thanks{padding:30px 0}
 .thanks .tick{width:56px;height:56px;border-radius:50%;background:var(--verde);display:grid;place-items:center;margin-bottom:18px}
@@ -94,6 +95,7 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
       <fieldset data-q="empresa" data-req><label class="lbl" for="empresa">1. Empresa <span class="req">*</span></label><input type="text" id="empresa" name="empresa" autocomplete="organization"><div class="err">Escribe el nombre de tu empresa.</div></fieldset>
       <fieldset data-q="nombre" data-req><label class="lbl" for="nombre">2. Nombre y apellido <span class="req">*</span></label><input type="text" id="nombre" name="nombre" autocomplete="name"><div class="err">Escribe tu nombre y apellido.</div></fieldset>
       <fieldset data-q="rol" data-req><label class="lbl" for="rol">3. Rol o cargo <span class="req">*</span></label><input type="text" id="rol" name="rol" autocomplete="organization-title"><div class="err">Escribe tu rol o cargo.</div></fieldset>
+      <fieldset data-q="correo" data-req><label class="lbl" for="correo">Correo electrónico de contacto <span class="req">*</span></label><span class="hint">Lo usaremos para enviarte información sobre esta capacitación.</span><input type="email" id="correo" name="correo" autocomplete="email" inputmode="email" maxlength="120"><div class="err">Escribe un correo válido, por ejemplo nombre@empresa.com.</div></fieldset>
       <fieldset data-q="responsabilidades" data-req><label class="lbl" for="responsabilidades">4. Describe las responsabilidades principales de tu cargo en el día a día <span class="req">*</span></label><textarea id="responsabilidades" name="responsabilidades" placeholder="Menciona las actividades centrales bajo tu gestión..."></textarea><div class="err">Cuéntanos brevemente tus responsabilidades.</div></fieldset>
     </section>
 
@@ -176,7 +178,12 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
       <div class="eyebrow">Tu caso prioritario</div>
       <fieldset data-q="caso_prioritario" data-req><label class="lbl" for="caso_prioritario">12. Si en la capacitación resolviéramos un solo reporte, proceso o gestión de tu área, ¿cuál sería? Cuéntanos qué información entra, qué haces con ella y qué resultado entregas. <span class="req">*</span></label><textarea id="caso_prioritario" name="caso_prioritario" placeholder="Ej.: cada mes recibo facturas en PDF, las paso a Excel y armo el informe de pagos para gerencia..."></textarea><div class="err">Cuéntanos cuál sería ese caso.</div></fieldset>
       <fieldset><label class="lbl" for="comentarios">13. ¿Algo más que debamos tener en cuenta? Por ejemplo, una inquietud, una expectativa o si podrías compartir un ejemplo de ese proceso sin datos reales <span class="hint" style="display:inline">(opcional)</span></label><textarea id="comentarios" name="comentarios" placeholder="Comparte cualquier inquietud o expectativa..."></textarea></fieldset>
-      <p class="notice">Al enviar, autorizas a Stoa Vector a usar tus respuestas únicamente para diseñar y ajustar la capacitación de tu empresa, conforme a la Ley 1581 de 2012 sobre protección de datos personales. Además, registramos datos técnicos de navegación (tiempos de diligenciamiento, tipo de dispositivo y navegador) únicamente para mejorar este formulario; no incluyen tu dirección IP.</p>
+      <p class="notice"><b>Tratamiento de datos personales (Ley 1581 de 2012).</b> Responsable: Stoa Vector. Finalidad: usar tus respuestas y tus datos de contacto para diseñar y ajustar la capacitación de tu empresa y comunicarnos contigo sobre este diagnóstico. Como titular puedes conocer, actualizar, rectificar y suprimir tus datos, o revocar tu autorización, escribiendo a suribec@gmail.com. Además registramos datos técnicos de navegación (tiempos de diligenciamiento, tipo de dispositivo y navegador) únicamente para mejorar este formulario; no incluyen tu dirección IP.</p>
+      <fieldset class="consent" data-q="autoriza" data-req>
+        <label class="opt"><input type="checkbox" name="autoriza" value="Sí"><span>He leído y autorizo el tratamiento de mis datos personales para la finalidad descrita. <span class="req">*</span></span></label>
+        <div class="err">Debes autorizar el tratamiento de tus datos para poder enviar el diagnóstico.</div>
+      </fieldset>
+      <fieldset class="consent"><label class="opt"><input type="checkbox" name="contacto_comercial" value="Sí"><span>(Opcional) Autorizo que Stoa Vector me contacte para compartirme información sobre otros servicios y capacitaciones.</span></label></fieldset>
       <div class="banner-err" id="serr" role="alert"></div>
     </section>
 
@@ -235,9 +242,9 @@ function val(q){const t=q.dataset.q,max=+q.dataset.max||0;let ok=true;
   const checks=[...q.querySelectorAll('input[type=checkbox]')],radios=[...q.querySelectorAll('input[type=radio]')];
   if(checks.length){const n=checks.filter(c=>c.checked).length;ok=n>=1&&(!max||n<=max)}
   else if(radios.length){ok=radios.some(r=>r.checked)}
-  else{const el=q.querySelector('input,textarea');ok=el.value.trim().length>0}
+  else{const el=q.querySelector('input,textarea'),v=el.value.trim();ok=v.length>0&&(el.type!=='email'||/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))}
   q.classList.toggle('bad',!ok);return ok}
-function validate(n){let first=null;steps[n].querySelectorAll('fieldset[data-req]').forEach(q=>{if(!val(q)){M.errs++;const k='P'+QN[q.dataset.q];M.errBy[k]=(M.errBy[k]||0)+1;if(!first)first=q}});
+function validate(n){let first=null;steps[n].querySelectorAll('fieldset[data-req]').forEach(q=>{if(!val(q)){M.errs++;const k=QN[q.dataset.q]?'P'+QN[q.dataset.q]:q.dataset.q;M.errBy[k]=(M.errBy[k]||0)+1;if(!first)first=q}});
   if(first){saveM();first.scrollIntoView({behavior:'smooth',block:'center'});const el=first.querySelector('input,textarea');el&&el.focus({preventScroll:true})}return !first}
 // Máximo 3 en la pregunta 6
 document.querySelectorAll('fieldset[data-max]').forEach(q=>{const max=+q.dataset.max,cs=[...q.querySelectorAll('input[type=checkbox]')];
