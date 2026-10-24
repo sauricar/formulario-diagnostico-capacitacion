@@ -19,9 +19,33 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--marfil);color:var(--verde);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.55}
-.progress{position:fixed;top:0;left:0;right:0;display:flex;gap:8px;padding:0 8px;z-index:10;background:transparent}
-.progress i{flex:1;height:5px;border-radius:0 0 3px 3px;background:rgba(247,248,245,.35);transition:background .3s}
-.progress i.on{background:var(--lima)}
+.topbar{position:sticky;top:0;z-index:30;background:var(--verde);color:#fff;padding:9px 16px 0}
+.tb-row{display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.3;padding-bottom:8px}
+.tb-row span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-track{height:5px;margin:0 -16px;background:rgba(247,248,245,.22)}
+.tb-track i{display:block;height:100%;width:0;background:var(--lima);transition:width .35s ease}
+.rail{display:none}
+@media (min-width:900px){
+  .topbar{display:none}
+  .rail{display:block;position:fixed;right:clamp(12px,2vw,30px);top:50%;transform:translateY(-50%);z-index:20}
+  .rail ol{list-style:none;margin:0;padding:0}
+  .rail li{position:relative;height:60px;display:flex;justify-content:flex-end;align-items:center}
+  .rail li::after{content:"";position:absolute;right:8px;top:50%;width:2px;height:100%;background:var(--suave);z-index:0}
+  .rail li:last-child::after{display:none}
+  .rail li.done::after{background:var(--azul)}
+  .rail li.current::after{background:linear-gradient(var(--azul) calc(var(--f,0)*100%),var(--suave) 0)}
+  .rail .dot{position:relative;z-index:1;width:18px;height:18px;border-radius:50%;padding:0;border:2px solid var(--borde);background:var(--marfil);display:grid;place-items:center;font-size:0;cursor:default;transition:background .2s,border-color .2s,transform .2s}
+  .rail .dot:hover{background:var(--marfil);border-color:var(--borde)}
+  .rail li.done .dot{background:var(--azul);border-color:var(--azul);cursor:pointer}
+  .rail li.done .dot::before{content:"";width:8px;height:5px;margin-top:-2px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+  .rail li.current .dot{background:var(--lima);border-color:var(--verde);transform:scale(1.35);box-shadow:0 0 0 4px rgba(204,255,0,.35)}
+  .rail li.reach .dot{cursor:pointer}
+  .rail .dot:focus-visible{outline:3px solid var(--lima);outline-offset:3px;box-shadow:0 0 0 5px var(--verde)}
+  .rail .name{position:absolute;right:30px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--verde);background:var(--marfil);border:1px solid var(--suave);border-radius:6px;padding:4px 9px;opacity:0;pointer-events:none;transition:opacity .15s}
+  .rail li:hover .name,.rail li:focus-within .name{opacity:1}
+  .rail-pct{margin-top:10px;text-align:right;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--verde)}
+}
+@media (min-width:1280px){.rail li.current .name{opacity:1;border-color:transparent;background:transparent}}
 .cover{background:var(--azul);height:clamp(150px,27vw,320px);overflow:hidden}
 .cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 main{max-width:720px;margin:0 auto;padding:0 20px 80px}
@@ -76,7 +100,8 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
 </style>
 </head>
 <body>
-<div class="progress" id="progress" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="topbar" id="topbar" role="progressbar" aria-label="Avance del formulario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tb-row"><span id="tbStep">Paso 1 de 4</span><span id="tbPct">0 %</span></div><div class="tb-track"><i id="tbFill"></i></div></div>
+<nav class="rail" id="rail" aria-label="Progreso del formulario"><ol id="railList"></ol><div class="rail-pct" id="railPct">0 %</div></nav>
 <div class="cover"><img src="banner.svg?v=2" alt="Stoa Vector"></div>
 <main>
   <img class="avatar" src="icon.svg" alt="">
@@ -206,7 +231,7 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
 /* ====== CONFIGURACIÓN ====== */
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbw0zoWONUtSPpv4yIO9gjMEwhRnGjQxgNuCHL0ZS9AnwBgmekhHKOB1PETvXOboryNeMQ/exec";   // URL de la aplicación web de Apps Script (termina en /exec)
 /* =========================== */
-const f=document.getElementById('f'),steps=[...document.querySelectorAll('.step')],bars=[...document.querySelectorAll('#progress i')];
+const f=document.getElementById('f'),steps=[...document.querySelectorAll('.step')];
 const next=document.getElementById('next'),back=document.getElementById('back'),serr=document.getElementById('serr');
 let cur=0;
 const KEY='sv_diag_draft',MKEY='sv_diag_meta';
@@ -235,21 +260,35 @@ document.addEventListener('visibilitychange',()=>{tick();if(document.hidden){sav
 addEventListener('pagehide',()=>{tick();saveM();beacon()});
 f.addEventListener('focusin',e=>{tick();fq=QN[e.target.name]||null});
 f.addEventListener('focusout',()=>{tick();fq=null});
-function show(n){tick();cur=n;M.maxStep=Math.max(M.maxStep,n+1);saveM();beacon();document.querySelector('.intro').hidden=n>0;
-  steps.forEach((s,i)=>{const e=s.querySelector('.eyebrow');if(e){e.dataset.t=e.dataset.t||e.textContent;e.textContent='Paso '+(i+1)+' de '+steps.length+' · '+e.dataset.t}});steps.forEach((s,i)=>s.classList.toggle('active',i===n));bars.forEach((b,i)=>b.classList.toggle('on',i<=n));
+function show(n){tick();cur=n;progress();M.maxStep=Math.max(M.maxStep,n+1);saveM();beacon();document.querySelector('.intro').hidden=n>0;
+  steps.forEach((s,i)=>{const e=s.querySelector('.eyebrow');if(e){e.dataset.t=e.dataset.t||e.textContent;e.textContent='Paso '+(i+1)+' de '+steps.length+' · '+e.dataset.t}});steps.forEach((s,i)=>s.classList.toggle('active',i===n));
   back.hidden=n===0;next.textContent=n===steps.length-1?'Enviar diagnóstico':'Siguiente';if(n>0){const h=document.querySelector('h1').getBoundingClientRect().top+window.scrollY-24;window.scrollTo({top:h,behavior:'smooth'})}else window.scrollTo({top:0,behavior:'smooth'})}
-function val(q){const t=q.dataset.q,max=+q.dataset.max||0;let ok=true;
-  const checks=[...q.querySelectorAll('input[type=checkbox]')],radios=[...q.querySelectorAll('input[type=radio]')];
-  if(checks.length){const n=checks.filter(c=>c.checked).length;ok=n>=1&&(!max||n<=max)}
-  else if(radios.length){ok=radios.some(r=>r.checked)}
-  else{const el=q.querySelector('input,textarea'),v=el.value.trim();ok=v.length>0&&(el.type!=='email'||/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))}
-  q.classList.toggle('bad',!ok);return ok}
+const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function filled(q){const cs=[...q.querySelectorAll('input[type=checkbox]')],rs=[...q.querySelectorAll('input[type=radio]')],max=+q.dataset.max||0;
+  if(cs.length){const n=cs.filter(c=>c.checked).length;return n>=1&&(!max||n<=max)}
+  if(rs.length)return rs.some(r=>r.checked);
+  const el=q.querySelector('input,textarea'),v=el.value.trim();return v.length>0&&(el.type!=='email'||EMAIL.test(v))}
+function val(q){const ok=filled(q);q.classList.toggle('bad',!ok);return ok}
+/* ===== Indicador de avance: riel lateral (escritorio) y barra superior (celular) ===== */
+const labels=steps.map(s=>s.querySelector('.eyebrow').textContent.trim());
+const railList=document.getElementById('railList'),tb=document.getElementById('topbar');
+labels.forEach((t,i)=>{const li=document.createElement('li');li.innerHTML='<button type="button" class="dot" aria-label="Paso '+(i+1)+': '+t+'"></button><span class="name"></span>';li.querySelector('.name').textContent=(i+1)+' · '+t;
+  li.querySelector('.dot').onclick=()=>{if(i<M.maxStep&&i!==cur){if(i<cur)M.backs++;show(i)}};railList.appendChild(li)});
+let doneAll=false;
+function progress(){const reqs=[...f.querySelectorAll('fieldset[data-req]')],ok=reqs.filter(filled).length;
+  const pct=doneAll?100:Math.round(100*ok/reqs.length),lis=[...railList.children];
+  lis.forEach((li,i)=>{const r=[...steps[i].querySelectorAll('fieldset[data-req]')];li.classList.toggle('done',doneAll||i<cur);li.classList.toggle('current',!doneAll&&i===cur);li.classList.toggle('reach',i<M.maxStep);
+    li.style.setProperty('--f',r.length?r.filter(filled).length/r.length:1);const d=li.querySelector('.dot');if(i===cur&&!doneAll)d.setAttribute('aria-current','step');else d.removeAttribute('aria-current')});
+  document.getElementById('railPct').textContent=pct+' %';document.getElementById('tbPct').textContent=pct+' %';
+  document.getElementById('tbStep').textContent=doneAll?'Enviado':'Paso '+(cur+1)+' de '+steps.length+' · '+labels[cur];
+  document.getElementById('tbFill').style.width=pct+'%';tb.setAttribute('aria-valuenow',pct)}
 function validate(n){let first=null;steps[n].querySelectorAll('fieldset[data-req]').forEach(q=>{if(!val(q)){M.errs++;const k=QN[q.dataset.q]?'P'+QN[q.dataset.q]:q.dataset.q;M.errBy[k]=(M.errBy[k]||0)+1;if(!first)first=q}});
   if(first){saveM();first.scrollIntoView({behavior:'smooth',block:'center'});const el=first.querySelector('input,textarea');el&&el.focus({preventScroll:true})}return !first}
 // Máximo 3 en la pregunta 6
 document.querySelectorAll('fieldset[data-max]').forEach(q=>{const max=+q.dataset.max,cs=[...q.querySelectorAll('input[type=checkbox]')];
   q.addEventListener('change',()=>{const n=cs.filter(c=>c.checked).length;cs.forEach(c=>{const off=n>=max&&!c.checked;c.disabled=off;c.closest('.opt').classList.toggle('off',off)})})});
-f.addEventListener('input',e=>{const q=e.target.closest('fieldset[data-req]');q&&q.classList.contains('bad')&&val(q);save()});
+f.addEventListener('input',e=>{const q=e.target.closest('fieldset[data-req]');q&&q.classList.contains('bad')&&val(q);save();progress()});
+f.addEventListener('change',progress);
 function data(){const d={};new FormData(f).forEach((v,k)=>{d[k]=d[k]?d[k]+' | '+v:v});return d}
 function save(){try{sessionStorage.setItem(KEY,JSON.stringify(data()))}catch(e){}saveM()}
 function restore(){try{const d=JSON.parse(sessionStorage.getItem(KEY)||'{}');Object.entries(d).forEach(([k,v])=>{const vals=String(v).split(' | ');
@@ -270,7 +309,7 @@ next.onclick=async()=>{
     if(!j.ok)throw new Error(j.error||'error');
     finished=true;try{sessionStorage.removeItem(KEY);sessionStorage.removeItem(MKEY)}catch(e){}
     f.hidden=true;document.querySelector('.intro').hidden=true;document.querySelector('h1').scrollIntoView();
-    document.getElementById('done').hidden=false;bars.forEach(b=>b.classList.add('on'));
+    document.getElementById('done').hidden=false;doneAll=true;progress();
   }catch(err){
     M.fails++;saveM();
     serr.textContent='No pudimos enviar tus respuestas. Revisa tu conexión y pulsa "Enviar diagnóstico" de nuevo. Tus respuestas siguen en pantalla.';
