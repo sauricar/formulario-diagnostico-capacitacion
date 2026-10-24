@@ -203,8 +203,9 @@ const f=document.getElementById('f'),steps=[...document.querySelectorAll('.step'
 const next=document.getElementById('next'),back=document.getElementById('back'),serr=document.getElementById('serr');
 let cur=0;
 const KEY='sv_diag_draft';
-function show(n){cur=n;steps.forEach((s,i)=>s.classList.toggle('active',i===n));bars.forEach((b,i)=>b.classList.toggle('on',i<=n));
-  back.hidden=n===0;next.textContent=n===steps.length-1?'Enviar diagnóstico':'Siguiente';window.scrollTo({top:0,behavior:'smooth'})}
+function show(n){cur=n;document.querySelector('.intro').hidden=n>0;
+  steps.forEach((s,i)=>{const e=s.querySelector('.eyebrow');if(e){e.dataset.t=e.dataset.t||e.textContent;e.textContent='Paso '+(i+1)+' de '+steps.length+' · '+e.dataset.t}});steps.forEach((s,i)=>s.classList.toggle('active',i===n));bars.forEach((b,i)=>b.classList.toggle('on',i<=n));
+  back.hidden=n===0;next.textContent=n===steps.length-1?'Enviar diagnóstico':'Siguiente';if(n>0){const h=document.querySelector('h1').getBoundingClientRect().top+window.scrollY-24;window.scrollTo({top:h,behavior:'smooth'})}else window.scrollTo({top:0,behavior:'smooth'})}
 function val(q){const t=q.dataset.q,max=+q.dataset.max||0;let ok=true;
   const checks=[...q.querySelectorAll('input[type=checkbox]')],radios=[...q.querySelectorAll('input[type=radio]')];
   if(checks.length){const n=checks.filter(c=>c.checked).length;ok=n>=1&&(!max||n<=max)}
