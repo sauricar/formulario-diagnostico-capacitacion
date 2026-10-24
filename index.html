@@ -19,11 +19,10 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--marfil);color:var(--verde);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.55}
-.topbar{position:sticky;top:0;z-index:30;background:var(--verde);color:#fff;padding:9px 16px 0}
-.tb-row{display:flex;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.3;padding-bottom:8px}
-.tb-row span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tb-track{height:5px;margin:0 -16px;background:rgba(247,248,245,.22)}
-.tb-track i{display:block;height:100%;width:0;background:var(--lima);transition:width .35s ease}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;height:30px;padding:0 14px;background:var(--verde);color:#fff;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11.5px;font-weight:700;letter-spacing:.04em;line-height:1}
+.topbar span{flex:none;min-width:2.6em}.topbar #tbPct{text-align:right}
+.tb-track{flex:1;height:6px;border-radius:3px;background:rgba(247,248,245,.25);overflow:hidden}
+.tb-track i{display:block;height:100%;width:0;border-radius:3px;background:var(--lima);transition:width .35s ease}
 .rail{display:none}
 @media (min-width:900px){
   .topbar{display:none}
@@ -100,7 +99,7 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
 </style>
 </head>
 <body>
-<div class="topbar" id="topbar" role="progressbar" aria-label="Avance del formulario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="tb-row"><span id="tbStep">Paso 1 de 4</span><span id="tbPct">0 %</span></div><div class="tb-track"><i id="tbFill"></i></div></div>
+<div class="topbar" id="topbar" role="progressbar" aria-label="Avance del formulario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="tbStep">1/4</span><div class="tb-track"><i id="tbFill"></i></div><span id="tbPct">0 %</span></div>
 <nav class="rail" id="rail" aria-label="Progreso del formulario"><ol id="railList"></ol><div class="rail-pct" id="railPct">0 %</div></nav>
 <div class="cover"><img src="banner.svg?v=2" alt="Stoa Vector"></div>
 <main>
@@ -280,7 +279,7 @@ function progress(){const reqs=[...f.querySelectorAll('fieldset[data-req]')],ok=
   lis.forEach((li,i)=>{const r=[...steps[i].querySelectorAll('fieldset[data-req]')];li.classList.toggle('done',doneAll||i<cur);li.classList.toggle('current',!doneAll&&i===cur);li.classList.toggle('reach',i<M.maxStep);
     li.style.setProperty('--f',r.length?r.filter(filled).length/r.length:1);const d=li.querySelector('.dot');if(i===cur&&!doneAll)d.setAttribute('aria-current','step');else d.removeAttribute('aria-current')});
   document.getElementById('railPct').textContent=pct+' %';document.getElementById('tbPct').textContent=pct+' %';
-  document.getElementById('tbStep').textContent=doneAll?'Enviado':'Paso '+(cur+1)+' de '+steps.length+' · '+labels[cur];
+  document.getElementById('tbStep').textContent=doneAll?'✓':(cur+1)+'/'+steps.length;
   document.getElementById('tbFill').style.width=pct+'%';tb.setAttribute('aria-valuenow',pct)}
 function validate(n){let first=null;steps[n].querySelectorAll('fieldset[data-req]').forEach(q=>{if(!val(q)){M.errs++;const k=QN[q.dataset.q]?'P'+QN[q.dataset.q]:q.dataset.q;M.errBy[k]=(M.errBy[k]||0)+1;if(!first)first=q}});
   if(first){saveM();first.scrollIntoView({behavior:'smooth',block:'center'});const el=first.querySelector('input,textarea');el&&el.focus({preventScroll:true})}return !first}
