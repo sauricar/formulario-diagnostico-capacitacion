@@ -24,6 +24,7 @@ body{margin:0;background:var(--marfil);color:var(--verde);font-family:'Plus Jaka
 .tb-track{flex:1;height:6px;border-radius:3px;background:rgba(247,248,245,.25);overflow:hidden}
 .tb-track i{display:block;height:100%;width:0;border-radius:3px;background:var(--lima);transition:width .35s ease}
 .rail{display:none}
+@media (max-width:899px){.pn{display:none}}
 @media (min-width:900px){
   .topbar{display:none}
   .rail{display:block;position:fixed;right:clamp(12px,2vw,30px);top:50%;transform:translateY(-50%);z-index:20}
@@ -260,7 +261,7 @@ addEventListener('pagehide',()=>{tick();saveM();beacon()});
 f.addEventListener('focusin',e=>{tick();fq=QN[e.target.name]||null});
 f.addEventListener('focusout',()=>{tick();fq=null});
 function show(n){tick();cur=n;progress();M.maxStep=Math.max(M.maxStep,n+1);saveM();beacon();document.querySelector('.intro').hidden=n>0;
-  steps.forEach((s,i)=>{const e=s.querySelector('.eyebrow');if(e){e.dataset.t=e.dataset.t||e.textContent;e.textContent='Paso '+(i+1)+' de '+steps.length+' · '+e.dataset.t}});steps.forEach((s,i)=>s.classList.toggle('active',i===n));
+  steps.forEach((s,i)=>{const e=s.querySelector('.eyebrow');if(e){e.dataset.t=e.dataset.t||e.textContent;e.textContent='';const pn=document.createElement('span');pn.className='pn';pn.textContent='Paso '+(i+1)+' de '+steps.length+' · ';e.append(pn,e.dataset.t)}});steps.forEach((s,i)=>s.classList.toggle('active',i===n));
   back.hidden=n===0;next.textContent=n===steps.length-1?'Enviar diagnóstico':'Siguiente';if(n>0){const h=document.querySelector('h1').getBoundingClientRect().top+window.scrollY-24;window.scrollTo({top:h,behavior:'smooth'})}else window.scrollTo({top:0,behavior:'smooth'})}
 const EMAIL=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 function filled(q){const cs=[...q.querySelectorAll('input[type=checkbox]')],rs=[...q.querySelectorAll('input[type=radio]')],max=+q.dataset.max||0;
