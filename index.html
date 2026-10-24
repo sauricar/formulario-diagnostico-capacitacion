@@ -176,7 +176,7 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
       <div class="eyebrow">Tu caso prioritario</div>
       <fieldset data-q="caso_prioritario" data-req><label class="lbl" for="caso_prioritario">12. Si en la capacitación resolviéramos un solo reporte, proceso o gestión de tu área, ¿cuál sería? Cuéntanos qué información entra, qué haces con ella y qué resultado entregas. <span class="req">*</span></label><textarea id="caso_prioritario" name="caso_prioritario" placeholder="Ej.: cada mes recibo facturas en PDF, las paso a Excel y armo el informe de pagos para gerencia..."></textarea><div class="err">Cuéntanos cuál sería ese caso.</div></fieldset>
       <fieldset><label class="lbl" for="comentarios">13. ¿Algo más que debamos tener en cuenta? Por ejemplo, una inquietud, una expectativa o si podrías compartir un ejemplo de ese proceso sin datos reales <span class="hint" style="display:inline">(opcional)</span></label><textarea id="comentarios" name="comentarios" placeholder="Comparte cualquier inquietud o expectativa..."></textarea></fieldset>
-      <p class="notice">Al enviar, autorizas a Stoa Vector a usar tus respuestas únicamente para diseñar y ajustar la capacitación de tu empresa, conforme a la Ley 1581 de 2012 sobre protección de datos personales.</p>
+      <p class="notice">Al enviar, autorizas a Stoa Vector a usar tus respuestas únicamente para diseñar y ajustar la capacitación de tu empresa, conforme a la Ley 1581 de 2012 sobre protección de datos personales. Además, registramos datos técnicos de navegación (tiempos de diligenciamiento, tipo de dispositivo y navegador) únicamente para mejorar este formulario; no incluyen tu dirección IP.</p>
       <div class="banner-err" id="serr" role="alert"></div>
     </section>
 
@@ -202,8 +202,33 @@ const ENDPOINT = "https://script.google.com/macros/s/AKfycbw0zoWONUtSPpv4yIO9gjM
 const f=document.getElementById('f'),steps=[...document.querySelectorAll('.step')],bars=[...document.querySelectorAll('#progress i')];
 const next=document.getElementById('next'),back=document.getElementById('back'),serr=document.getElementById('serr');
 let cur=0;
-const KEY='sv_diag_draft';
-function show(n){cur=n;document.querySelector('.intro').hidden=n>0;
+const KEY='sv_diag_draft',MKEY='sv_diag_meta';
+/* ===== Metadatos de navegación (anónimos, no incluyen respuestas; el usuario no los ve) ===== */
+const QN={empresa:1,nombre:2,rol:3,responsabilidades:4,tarea_rutinaria:5,actividades:6,otra_actividad:6,horas:7,herramientas:8,otra_herramienta:8,nivel_ia:9,ia_permitida:10,tipo_info:11,caso_prioritario:12,comentarios:13};
+const rid=()=>{try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,12)}};
+function device(){const ua=navigator.userAgent||'',w=screen.width||0,coarse=matchMedia('(pointer:coarse)').matches;
+  const tipo=/iPad|Tablet/i.test(ua)||(coarse&&Math.min(innerWidth,w)>=768)?'Tablet':(/Mobi|Android|iPhone/i.test(ua)||(coarse&&innerWidth<768)?'Celular':'Computador');
+  const os=/Windows/i.test(ua)?'Windows':/Android/i.test(ua)?'Android':/iPhone|iPad|iPod/i.test(ua)?'iOS':/Mac OS X/i.test(ua)?'macOS':/Linux/i.test(ua)?'Linux':'Otro';
+  const nav=/FBAN|FBAV|Instagram|Line\//i.test(ua)?'Navegador integrado (red social)':/Edg\//.test(ua)?'Edge':/OPR\/|Opera/.test(ua)?'Opera':/SamsungBrowser/.test(ua)?'Samsung Internet':/Firefox|FxiOS/.test(ua)?'Firefox':/Chrome|CriOS/.test(ua)?'Chrome':/Safari/.test(ua)?'Safari':'Otro';
+  let ref='';try{ref=new URL(document.referrer).hostname}catch(e){}
+  const p=new URLSearchParams(location.search),utm=['utm_source','utm_medium','utm_campaign'].map(k=>p.get(k)).filter(Boolean).join('/');
+  let tz='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone}catch(e){}
+  return {tipo,os,nav,pantalla:w+'x'+(screen.height||0),ventana:innerWidth+'x'+innerHeight,idioma:navigator.language||'',tz,origen:[ref,utm].filter(Boolean).join(' | ')||'directo'}}
+let M=null;try{M=JSON.parse(sessionStorage.getItem(MKEY)||'null')}catch(e){}
+if(!M||!M.sid)M={sid:rid(),t0:Date.now(),active:0,pages:[0,0,0,0],q:{},backs:0,errs:0,errBy:{},tries:0,fails:0,maxStep:1};
+M.dev=device();
+let fq=null,last=Date.now(),finished=false;
+function tick(){const n=Date.now(),d=(n-last)/1000;last=n;if(document.hidden||d>5)return;M.active+=d;M.pages[cur]=(M.pages[cur]||0)+d;if(fq)M.q[fq]=(M.q[fq]||0)+d}
+function saveM(){try{sessionStorage.setItem(MKEY,JSON.stringify(M))}catch(e){}}
+function metaOut(){tick();const r=o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[k,Math.round(v)]));
+  return {sid:M.sid,t0:M.t0,t1:Date.now(),active:Math.round(M.active),pages:M.pages.map(Math.round),q:r(M.q),backs:M.backs,errs:M.errs,errBy:M.errBy,tries:M.tries,fails:M.fails,maxStep:M.maxStep,dev:M.dev}}
+function beacon(){if(!ENDPOINT||finished)return;try{fetch(ENDPOINT,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({evt:'nav'},metaOut()))}).catch(()=>{})}catch(e){}}
+setInterval(tick,1000);
+document.addEventListener('visibilitychange',()=>{tick();if(document.hidden){saveM();beacon()}});
+addEventListener('pagehide',()=>{tick();saveM();beacon()});
+f.addEventListener('focusin',e=>{tick();fq=QN[e.target.name]||null});
+f.addEventListener('focusout',()=>{tick();fq=null});
+function show(n){tick();cur=n;M.maxStep=Math.max(M.maxStep,n+1);saveM();beacon();document.querySelector('.intro').hidden=n>0;
   steps.forEach((s,i)=>{const e=s.querySelector('.eyebrow');if(e){e.dataset.t=e.dataset.t||e.textContent;e.textContent='Paso '+(i+1)+' de '+steps.length+' · '+e.dataset.t}});steps.forEach((s,i)=>s.classList.toggle('active',i===n));bars.forEach((b,i)=>b.classList.toggle('on',i<=n));
   back.hidden=n===0;next.textContent=n===steps.length-1?'Enviar diagnóstico':'Siguiente';if(n>0){const h=document.querySelector('h1').getBoundingClientRect().top+window.scrollY-24;window.scrollTo({top:h,behavior:'smooth'})}else window.scrollTo({top:0,behavior:'smooth'})}
 function val(q){const t=q.dataset.q,max=+q.dataset.max||0;let ok=true;
@@ -212,34 +237,35 @@ function val(q){const t=q.dataset.q,max=+q.dataset.max||0;let ok=true;
   else if(radios.length){ok=radios.some(r=>r.checked)}
   else{const el=q.querySelector('input,textarea');ok=el.value.trim().length>0}
   q.classList.toggle('bad',!ok);return ok}
-function validate(n){let first=null;steps[n].querySelectorAll('fieldset[data-req]').forEach(q=>{if(!val(q)&&!first)first=q});
-  if(first){first.scrollIntoView({behavior:'smooth',block:'center'});const el=first.querySelector('input,textarea');el&&el.focus({preventScroll:true})}return !first}
+function validate(n){let first=null;steps[n].querySelectorAll('fieldset[data-req]').forEach(q=>{if(!val(q)){M.errs++;const k='P'+QN[q.dataset.q];M.errBy[k]=(M.errBy[k]||0)+1;if(!first)first=q}});
+  if(first){saveM();first.scrollIntoView({behavior:'smooth',block:'center'});const el=first.querySelector('input,textarea');el&&el.focus({preventScroll:true})}return !first}
 // Máximo 3 en la pregunta 6
 document.querySelectorAll('fieldset[data-max]').forEach(q=>{const max=+q.dataset.max,cs=[...q.querySelectorAll('input[type=checkbox]')];
   q.addEventListener('change',()=>{const n=cs.filter(c=>c.checked).length;cs.forEach(c=>{const off=n>=max&&!c.checked;c.disabled=off;c.closest('.opt').classList.toggle('off',off)})})});
 f.addEventListener('input',e=>{const q=e.target.closest('fieldset[data-req]');q&&q.classList.contains('bad')&&val(q);save()});
 function data(){const d={};new FormData(f).forEach((v,k)=>{d[k]=d[k]?d[k]+' | '+v:v});return d}
-function save(){try{sessionStorage.setItem(KEY,JSON.stringify(data()))}catch(e){}}
+function save(){try{sessionStorage.setItem(KEY,JSON.stringify(data()))}catch(e){}saveM()}
 function restore(){try{const d=JSON.parse(sessionStorage.getItem(KEY)||'{}');Object.entries(d).forEach(([k,v])=>{const vals=String(v).split(' | ');
   f.querySelectorAll('[name="'+k+'"]').forEach(el=>{if(el.type==='checkbox'||el.type==='radio')el.checked=vals.includes(el.value);else if(k!=='web')el.value=v})});
   f.querySelectorAll('fieldset[data-max]').forEach(q=>q.dispatchEvent(new Event('change')))}catch(e){}}
-back.onclick=()=>show(cur-1);
+back.onclick=()=>{M.backs++;show(cur-1)};
 next.onclick=async()=>{
   if(!validate(cur))return;
   if(cur<steps.length-1){show(cur+1);return}
   const d=data();if(d.web){return}   // trampa anti-bots
   serr.style.display='none';
   if(!ENDPOINT){serr.textContent='El formulario aún no está conectado. Avisa a Stoa Vector.';serr.style.display='block';return}
-  next.disabled=true;next.textContent='Enviando…';
+  next.disabled=true;next.textContent='Enviando…';M.tries++;d.m=metaOut();
   try{
     const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),20000);
     const r=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d),signal:ctl.signal});
     clearTimeout(t);const j=await r.json();
     if(!j.ok)throw new Error(j.error||'error');
-    try{sessionStorage.removeItem(KEY)}catch(e){}
+    finished=true;try{sessionStorage.removeItem(KEY);sessionStorage.removeItem(MKEY)}catch(e){}
     f.hidden=true;document.querySelector('.intro').hidden=true;document.querySelector('h1').scrollIntoView();
     document.getElementById('done').hidden=false;bars.forEach(b=>b.classList.add('on'));
   }catch(err){
+    M.fails++;saveM();
     serr.textContent='No pudimos enviar tus respuestas. Revisa tu conexión y pulsa "Enviar diagnóstico" de nuevo. Tus respuestas siguen en pantalla.';
     serr.style.display='block';next.disabled=false;next.textContent='Enviar diagnóstico';
   }
