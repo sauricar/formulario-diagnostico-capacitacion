@@ -108,7 +108,7 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
   <h1>Diagnóstico para Capacitación Perfilada en IA</h1>
   <div class="intro">
     <p>Gracias por tomarte unos minutos. Este diagnóstico nos ayuda a conocer cómo es tu trabajo real (las tareas que más tiempo te consumen y las herramientas que usas) para diseñar una capacitación en IA práctica, con ejemplos de tus propios procesos.</p>
-    <p><b>Tiempo estimado:</b> 8 minutos.<br><b>No hay respuestas correctas ni incorrectas:</b> cuéntanos lo que haces hoy, tal como es.<br><b>Privacidad:</b> no incluyas datos confidenciales (nombres de clientes, cifras, contraseñas). Tus respuestas solo se usan para preparar la capacitación.</p>
+    <p><b>Tiempo estimado:</b> 6 minutos.<br><b>No hay respuestas correctas ni incorrectas:</b> cuéntanos lo que haces hoy, tal como es.<br><b>Privacidad:</b> no incluyas datos confidenciales (nombres de clientes, cifras, contraseñas). Tus respuestas solo se usan para preparar la capacitación.</p>
   </div>
 
   <form id="f" novalidate autocomplete="on">
@@ -127,23 +127,21 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
     <!-- PÁGINA 2 -->
     <section class="step" data-step="2">
       <div class="eyebrow">Tu tiempo y tus tareas</div>
-      <fieldset data-q="tarea_rutinaria" data-req><label class="lbl" for="tarea_rutinaria">6. Si pudieras agilizar o resolver en una fracción del tiempo una sola tarea rutinaria de tu semana, ¿cuál sería? <span class="req">*</span></label><textarea id="tarea_rutinaria" name="tarea_rutinaria" placeholder="Describe brevemente en qué consiste y cómo la realizas hoy..."></textarea><div class="err">Cuéntanos cuál sería esa tarea.</div></fieldset>
-
       <fieldset data-q="actividades" data-req data-max="3">
-        <legend>7. ¿Cuáles de estas actividades consumen la mayor parte de tu semana? <span class="req">*</span></legend>
+        <legend>6. ¿En cuáles de estas actividades se te va la mayor parte de la semana? <span class="req">*</span></legend>
         <span class="hint">Elige máximo 3.</span>
-        <label class="opt"><input type="checkbox" name="actividades" value="Consolidar información"><span><b>Consolidar información:</b> Cruzar o compilar datos provenientes de distintas fuentes, archivos o correos.</span></label>
-        <label class="opt"><input type="checkbox" name="actividades" value="Revisión documental"><span><b>Revisión documental:</b> Leer un volumen alto de documentos (facturas, cuentas de cobro, contratos, solicitudes) para verificar datos o dar aprobaciones.</span></label>
-        <label class="opt"><input type="checkbox" name="actividades" value="Traslado de datos"><span><b>Traslado de datos:</b> Extraer o digitar información de un formato a otro (por ejemplo, pasar datos de PDFs/correos a Excel o a plataformas internas).</span></label>
-        <label class="opt"><input type="checkbox" name="actividades" value="Redacción y comunicación"><span><b>Redacción y comunicación:</b> Elaborar correos, circulares o dar respuesta a solicitudes y consultas recurrentes de otros compañeros o clientes.</span></label>
-        <label class="opt"><input type="checkbox" name="actividades" value="Organización de archivos"><span><b>Organización de archivos:</b> Descargar, clasificar, renombrar o archivar soportes y documentos digitales.</span></label>
-        <label class="opt"><input type="checkbox" name="actividades" value="Generación de informes"><span><b>Generación de informes:</b> Elaborar reportes periódicos (semanales/mensuales) reuniendo información dispersa.</span></label>
+        <label class="opt"><input type="checkbox" name="actividades" value="Redacción y respuestas"><span><b>Redactar y responder:</b> correos, comunicados o respuestas a solicitudes y consultas que se repiten.</span></label>
+        <label class="opt"><input type="checkbox" name="actividades" value="Revisión de documentos"><span><b>Revisar documentos:</b> leer facturas, contratos o solicitudes para verificar datos o aprobar.</span></label>
+        <label class="opt"><input type="checkbox" name="actividades" value="Traslado de datos"><span><b>Pasar datos de un lugar a otro:</b> digitar o copiar información de PDF o correos a Excel o a otros sistemas.</span></label>
+        <label class="opt"><input type="checkbox" name="actividades" value="Consolidación e informes"><span><b>Consolidar datos y hacer informes:</b> cruzar información de varias fuentes y armar reportes periódicos.</span></label>
+        <label class="opt"><input type="checkbox" name="actividades" value="Organización de archivos"><span><b>Organizar y buscar archivos:</b> descargar, clasificar, renombrar o encontrar documentos.</span></label>
+        <label class="opt"><input type="checkbox" name="actividades" value="Reuniones y seguimiento"><span><b>Reuniones y seguimiento:</b> preparar reuniones, tomar notas o actas y hacer seguimiento a compromisos.</span></label>
         <div class="err">Elige entre 1 y 3 actividades.</div>
       </fieldset>
-      <fieldset><label class="lbl" for="otra_actividad">¿Alguna otra actividad que te consuma tiempo? <span class="hint" style="display:inline">(opcional)</span></label><input type="text" id="otra_actividad" name="otra_actividad" placeholder="Especificar otra actividad..."></fieldset>
+      <fieldset><label class="lbl" for="otra_actividad">¿Otra actividad que te consuma mucho tiempo? <span class="hint" style="display:inline">(opcional)</span></label><input type="text" id="otra_actividad" name="otra_actividad" placeholder="Escríbela aquí..."></fieldset>
 
       <fieldset data-q="horas" data-req>
-        <legend>8. Sumando las actividades que marcaste en la pregunta 7, ¿cuántas horas a la semana calculas que les dedicas? <span class="req">*</span></legend>
+        <legend>7. En total, ¿cuántas horas a la semana te toman las actividades que marcaste? <span class="req">*</span></legend>
         <label class="opt"><input type="radio" name="horas" value="Menos de 3 horas"><span>Menos de 3 horas</span></label>
         <label class="opt"><input type="radio" name="horas" value="De 3 a 6 horas"><span>De 3 a 6 horas</span></label>
         <label class="opt"><input type="radio" name="horas" value="Más de 6 y hasta 12 horas"><span>Más de 6 y hasta 12 horas</span></label>
@@ -155,45 +153,41 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
     <!-- PÁGINA 3 -->
     <section class="step" data-step="3">
       <div class="eyebrow">Tus herramientas y tu experiencia con IA</div>
-      <fieldset data-q="herramientas" data-req>
-        <legend>9. ¿Cuáles son tus herramientas principales de trabajo en el día a día? <span class="req">*</span></legend>
-        <span class="hint">Marca las que apliquen.</span>
-        <label class="opt"><input type="checkbox" name="herramientas" value="Hojas de cálculo (Excel / Google Sheets)"><span>Hojas de cálculo (Excel / Google Sheets)</span></label>
-        <label class="opt"><input type="checkbox" name="herramientas" value="Procesadores de texto (Word / Google Docs)"><span>Procesadores de texto (Word / Google Docs)</span></label>
-        <label class="opt"><input type="checkbox" name="herramientas" value="Correo electrónico (Outlook / Gmail)"><span>Correo electrónico (Outlook / Gmail)</span></label>
-        <label class="opt"><input type="checkbox" name="herramientas" value="Documentos y lectores PDF"><span>Documentos y lectores PDF</span></label>
-        <label class="opt"><input type="checkbox" name="herramientas" value="Software de gestión administrativa / ERP / CRM"><span>Software de gestión administrativa / ERP / CRM</span></label>
-        <label class="opt"><input type="checkbox" name="herramientas" value="Canales de comunicación interna (Teams / Slack / WhatsApp)"><span>Canales de comunicación interna (Teams / Slack / WhatsApp)</span></label>
-        <div class="err">Marca al menos una herramienta.</div>
+      <fieldset data-q="suite" data-req>
+        <legend>8. ¿Con qué herramientas de oficina trabajas principalmente? <span class="req">*</span></legend>
+        <label class="opt"><input type="radio" name="suite" value="Microsoft 365"><span><b>Microsoft 365:</b> Outlook, Excel, Word, Teams.</span></label>
+        <label class="opt"><input type="radio" name="suite" value="Google Workspace"><span><b>Google Workspace:</b> Gmail, Hojas de cálculo, Documentos, Meet.</span></label>
+        <label class="opt"><input type="radio" name="suite" value="Ambas"><span>Uso ambas por igual.</span></label>
+        <label class="opt"><input type="radio" name="suite" value="Otra o no sabe"><span>Otras herramientas / no estoy seguro.</span></label>
+        <div class="err">Elige una opción.</div>
       </fieldset>
-      <fieldset><label class="lbl" for="otra_herramienta">¿Cuál es tu software de gestión, ERP, CRM u otra herramienta clave? <span class="hint" style="display:inline">(opcional)</span></label><input type="text" id="otra_herramienta" name="otra_herramienta" placeholder="Indica cuál ERP, CRM u otra herramienta utilizas..."></fieldset>
+      <fieldset><label class="lbl" for="otra_herramienta">¿Usas algún sistema clave para tu trabajo, como un ERP, CRM o software contable? ¿Cuál? <span class="hint" style="display:inline">(opcional)</span></label><input type="text" id="otra_herramienta" name="otra_herramienta" placeholder="Ej.: SAP, Siigo, Salesforce, un sistema interno..."></fieldset>
 
       <fieldset data-q="nivel_ia" data-req>
-        <legend>10. ¿En qué nivel consideras que te encuentras actualmente en el uso de herramientas de Inteligencia Artificial (ChatGPT, Copilot, Gemini, etc.)? <span class="req">*</span></legend>
-        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 0 (Nulo)"><span><b>Nivel 0 (Nulo):</b> No las he utilizado hasta el momento.</span></label>
-        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 1 (Exploratorio)"><span><b>Nivel 1 (Exploratorio):</b> Las he probado de forma esporádica para consultas puntuales o redacción básica, sin integrarlas a mis tareas formales.</span></label>
-        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 2 (Intermedio práctico)"><span><b>Nivel 2 (Intermedio práctico):</b> Las uso con cierta frecuencia para redactar o consultar ideas, pero no conozco cómo aplicarlas al análisis de mis datos o documentos del trabajo.</span></label>
-        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 3 (Frecuente/Avanzado)"><span><b>Nivel 3 (Frecuente/Avanzado):</b> Forman parte de mi rutina diaria de trabajo para resolver tareas complejas.</span></label>
+        <legend>9. ¿Qué tanto usas hoy herramientas de IA como ChatGPT, Copilot o Gemini? <span class="req">*</span></legend>
+        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 0 (Nulo)"><span><b>Nivel 0:</b> Nunca las he usado.</span></label>
+        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 1 (Exploratorio)"><span><b>Nivel 1:</b> Las he probado pocas veces, para preguntas puntuales o textos sencillos.</span></label>
+        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 2 (Intermedio)"><span><b>Nivel 2:</b> Las uso cada semana para redactar o buscar ideas, pero no con documentos ni datos de mi trabajo.</span></label>
+        <label class="opt"><input type="radio" name="nivel_ia" value="Nivel 3 (Avanzado)"><span><b>Nivel 3:</b> Las uso con frecuencia con documentos o datos de mi trabajo (resumir, analizar, extraer información).</span></label>
         <div class="err">Elige una opción.</div>
       </fieldset>
 
       <fieldset data-q="ia_permitida" data-req>
-        <legend>11. ¿Qué herramientas de IA están permitidas en tu empresa para el trabajo? <span class="req">*</span></legend>
-        <label class="opt"><input type="radio" name="ia_permitida" value="Hay una herramienta aprobada oficialmente"><span>Hay una herramienta aprobada oficialmente (por ejemplo Copilot o Gemini corporativo)</span></label>
-        <label class="opt"><input type="radio" name="ia_permitida" value="Herramientas gratuitas con precaución"><span>Se pueden usar herramientas gratuitas (ChatGPT, Gemini, etc.) con precaución</span></label>
-        <label class="opt"><input type="radio" name="ia_permitida" value="No están permitidas"><span>No están permitidas</span></label>
-        <label class="opt"><input type="radio" name="ia_permitida" value="No lo sé / sin política definida"><span>No lo sé / no hay una política definida</span></label>
+        <legend>10. ¿Qué dice tu empresa sobre usar IA en el trabajo? <span class="req">*</span></legend>
+        <label class="opt"><input type="radio" name="ia_permitida" value="Hay una herramienta aprobada oficialmente"><span>Hay una herramienta oficial aprobada (por ejemplo, Copilot o Gemini de la empresa).</span></label>
+        <label class="opt"><input type="radio" name="ia_permitida" value="Herramientas gratuitas con precaución"><span>Se permiten herramientas gratuitas, cuidando la información.</span></label>
+        <label class="opt"><input type="radio" name="ia_permitida" value="No están permitidas"><span>No está permitido usar IA.</span></label>
+        <label class="opt"><input type="radio" name="ia_permitida" value="No lo sé / sin política definida"><span>No lo sé / no hay una regla clara.</span></label>
         <div class="err">Elige una opción.</div>
       </fieldset>
 
       <fieldset data-q="tipo_info" data-req>
-        <legend>12. ¿Qué tipo de información manejas con más frecuencia en tu trabajo? <span class="req">*</span></legend>
+        <legend>11. ¿Con qué tipo de información trabajas a diario? <span class="req">*</span></legend>
         <span class="hint">Marca las que apliquen.</span>
-        <label class="opt"><input type="checkbox" name="tipo_info" value="Financiera o contable"><span>Financiera o contable</span></label>
-        <label class="opt"><input type="checkbox" name="tipo_info" value="Datos personales"><span>Datos personales de clientes, proveedores o empleados</span></label>
-        <label class="opt"><input type="checkbox" name="tipo_info" value="Contratos o legal"><span>Contratos o información legal</span></label>
-        <label class="opt"><input type="checkbox" name="tipo_info" value="Operativa general"><span>Operativa general (inventarios, pedidos, solicitudes)</span></label>
-        <label class="opt"><input type="checkbox" name="tipo_info" value="Interna no confidencial"><span>Información interna no confidencial</span></label>
+        <label class="opt"><input type="checkbox" name="tipo_info" value="Datos personales"><span>Datos personales de clientes, empleados o proveedores.</span></label>
+        <label class="opt"><input type="checkbox" name="tipo_info" value="Financiera o contable"><span>Información financiera o contable.</span></label>
+        <label class="opt"><input type="checkbox" name="tipo_info" value="Contratos o legal"><span>Contratos o información legal.</span></label>
+        <label class="opt"><input type="checkbox" name="tipo_info" value="Operativa o interna"><span>Información operativa o interna no confidencial (pedidos, inventarios, solicitudes).</span></label>
         <div class="err">Marca al menos una opción.</div>
       </fieldset>
     </section>
@@ -201,8 +195,27 @@ footer{max-width:720px;margin:0 auto;padding:0 20px 40px;font-family:'JetBrains 
     <!-- PÁGINA 4 -->
     <section class="step" data-step="4">
       <div class="eyebrow">Tu caso prioritario</div>
-      <fieldset data-q="caso_prioritario" data-req><label class="lbl" for="caso_prioritario">13. Si en la capacitación resolviéramos un solo reporte, proceso o gestión de tu área, ¿cuál sería? Cuéntanos qué información entra, qué haces con ella y qué resultado entregas. <span class="req">*</span></label><textarea id="caso_prioritario" name="caso_prioritario" placeholder="Ej.: cada mes recibo facturas en PDF, las paso a Excel y armo el informe de pagos para gerencia..."></textarea><div class="err">Cuéntanos cuál sería ese caso.</div></fieldset>
-      <fieldset><label class="lbl" for="comentarios">14. ¿Algo más que debamos tener en cuenta? Por ejemplo, una inquietud, una expectativa o si podrías compartir un ejemplo de ese proceso sin datos reales <span class="hint" style="display:inline">(opcional)</span></label><textarea id="comentarios" name="comentarios" placeholder="Comparte cualquier inquietud o expectativa..."></textarea></fieldset>
+      <fieldset data-q="caso_prioritario" data-req><label class="lbl" for="caso_prioritario">12. ¿Qué tarea, reporte o proceso de tu trabajo te gustaría agilizar primero con IA? <span class="req">*</span></label><span class="hint">Cuéntanos qué información recibes, qué haces con ella y qué entregas al final.</span><textarea id="caso_prioritario" name="caso_prioritario" placeholder="Ej.: cada mes recibo facturas en PDF, las paso a Excel y armo el informe de pagos para gerencia..."></textarea><div class="err">Cuéntanos cuál sería esa tarea o proceso.</div></fieldset>
+
+      <fieldset data-q="frecuencia" data-req>
+        <legend>13. ¿Cada cuánto lo haces? <span class="req">*</span></legend>
+        <label class="opt"><input type="radio" name="frecuencia" value="Todos los días"><span>Todos los días</span></label>
+        <label class="opt"><input type="radio" name="frecuencia" value="Cada semana"><span>Cada semana</span></label>
+        <label class="opt"><input type="radio" name="frecuencia" value="Cada mes"><span>Cada mes</span></label>
+        <label class="opt"><input type="radio" name="frecuencia" value="Ocasionalmente"><span>Ocasionalmente</span></label>
+        <div class="err">Elige una opción.</div>
+      </fieldset>
+
+      <fieldset data-q="tiempo_caso" data-req>
+        <legend>14. ¿Cuánto tiempo te toma cada vez? <span class="req">*</span></legend>
+        <label class="opt"><input type="radio" name="tiempo_caso" value="Menos de 30 minutos"><span>Menos de 30 minutos</span></label>
+        <label class="opt"><input type="radio" name="tiempo_caso" value="Entre 30 minutos y 1 hora"><span>Entre 30 minutos y 1 hora</span></label>
+        <label class="opt"><input type="radio" name="tiempo_caso" value="Entre 1 y 3 horas"><span>Entre 1 y 3 horas</span></label>
+        <label class="opt"><input type="radio" name="tiempo_caso" value="Más de 3 horas"><span>Más de 3 horas</span></label>
+        <div class="err">Elige una opción.</div>
+      </fieldset>
+
+      <fieldset><label class="lbl" for="expectativas">15. Si participaras en una capacitación en IA, ¿qué te gustaría lograr o qué te inquieta? <span class="hint" style="display:inline">(opcional)</span></label><textarea id="expectativas" name="expectativas" placeholder="Ej.: ahorrar tiempo en los informes, aprender a usarla sin poner en riesgo la información..."></textarea></fieldset>
       <p class="notice"><b>Tratamiento de datos personales (Ley 1581 de 2012).</b> Responsable: Stoa Vector. Finalidad: usar tus respuestas y tus datos de contacto para estimar el alcance de una capacitación en IA para tu empresa, preparar una propuesta de servicios y comunicarnos contigo sobre este diagnóstico. Como titular puedes conocer, actualizar, rectificar y suprimir tus datos, o revocar tu autorización, escribiendo a suribec@gmail.com. Además registramos datos técnicos de navegación únicamente para mejorar este formulario.</p>
       <fieldset class="consent" data-q="autoriza" data-req>
         <label class="opt"><input type="checkbox" name="autoriza" value="Sí"><span>He leído y autorizo el tratamiento de mis datos personales para la finalidad descrita. <span class="req">*</span></span></label>
@@ -236,7 +249,7 @@ const next=document.getElementById('next'),back=document.getElementById('back'),
 let cur=0;
 const KEY='sv_diag_draft',MKEY='sv_diag_meta';
 /* ===== Metadatos de navegación (anónimos, no incluyen respuestas; el usuario no los ve) ===== */
-const QN={empresa:1,nombre:2,rol:3,correo:4,responsabilidades:5,tarea_rutinaria:6,actividades:7,otra_actividad:7,horas:8,herramientas:9,otra_herramienta:9,nivel_ia:10,ia_permitida:11,tipo_info:12,caso_prioritario:13,comentarios:14};
+const QN={empresa:1,nombre:2,rol:3,correo:4,responsabilidades:5,actividades:6,otra_actividad:6,horas:7,suite:8,otra_herramienta:8,nivel_ia:9,ia_permitida:10,tipo_info:11,caso_prioritario:12,frecuencia:13,tiempo_caso:14,expectativas:15};
 const rid=()=>{try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,12)}};
 function device(){const ua=navigator.userAgent||'',w=screen.width||0,coarse=matchMedia('(pointer:coarse)').matches;
   const tipo=/iPad|Tablet/i.test(ua)||(coarse&&Math.min(innerWidth,w)>=768)?'Tablet':(/Mobi|Android|iPhone/i.test(ua)||(coarse&&innerWidth<768)?'Celular':'Computador');
